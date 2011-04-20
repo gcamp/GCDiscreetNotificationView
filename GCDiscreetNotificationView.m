@@ -10,6 +10,7 @@
 
 const CGFloat GCDiscreetNotificationViewBorderSize = 25;
 const CGFloat GCDiscreetNotificationViewPadding = 5;
+const CGFloat GCDiscreetNotificationViewHeight = 30;
 
 NSString* const GCShowAnimation = @"show";
 NSString* const GCShowAfterPresentation = @"showAfterPresentation";
@@ -51,7 +52,8 @@ NSString* const GCChangePresentationMode = @"changeMode";
     return [self initWithText:text showActivity:activity inPresentationMode:GCDiscreetNotificationViewPresentationModeTop inView:aView];
 }
 
-- (id) initWithText:(NSString *)text showActivity:(BOOL)activity inPresentationMode:(GCDiscreetNotificationViewPresentationMode)aPresentationMode inView:(UIView *)aView {
+- (id) initWithText:(NSString *)text showActivity:(BOOL)activity 
+ inPresentationMode:(GCDiscreetNotificationViewPresentationMode)aPresentationMode inView:(UIView *)aView {
     if ((self = [super initWithFrame:CGRectZero])) {
         self.view = aView;
         self.textLabel = text;
@@ -86,11 +88,12 @@ NSString* const GCChangePresentationMode = @"changeMode";
 - (void) layoutSubviews {
     CGFloat baseWidth = (2 * GCDiscreetNotificationViewBorderSize) + ((self.activityIndicator != nil) * GCDiscreetNotificationViewPadding);
     
-    CGFloat maxLabelSize = self.view.frame.size.width - self.activityIndicator.frame.size.width - baseWidth;
-    CGSize textSize = [self.textLabel sizeWithFont:self.label.font constrainedToSize:CGSizeMake(maxLabelSize, 30) lineBreakMode:UILineBreakModeTailTruncation];
+    CGFloat maxLabelWidth = self.view.frame.size.width - self.activityIndicator.frame.size.width - baseWidth;
+    CGSize maxLabelSize = CGSizeMake(maxLabelWidth, GCDiscreetNotificationViewHeight);
+    CGSize textSize = [self.textLabel sizeWithFont:self.label.font constrainedToSize:maxLabelSize lineBreakMode:UILineBreakModeTailTruncation];
     
-    CGRect bounds = CGRectMake(0, 0, baseWidth + textSize.width + (self.activityIndicator != nil) * self.activityIndicator.frame.size.width , 30);
-    if (!CGRectEqualToRect(self.bounds, bounds)) {
+    CGRect bounds = CGRectMake(0, 0, baseWidth + textSize.width + (self.activityIndicator != nil) * self.activityIndicator.frame.size.width , GCDiscreetNotificationViewHeight);
+    if (!CGRectEqualToRect(self.bounds, bounds)) { //The bounds have changed...
         self.bounds = bounds;
         [self setNeedsDisplay];
     }
@@ -144,6 +147,23 @@ NSString* const GCChangePresentationMode = @"changeMode";
 #pragma mark -
 #pragma mark Show/Hide 
 
+- (void)showAnimated {
+    [self show:YES];
+}
+
+- (void)hideAnimated {
+    [self hide:YES];
+}
+
+- (void)showAndDismissAutomaticallyAnimated {
+    [self showAndDismissAfter:1.0];
+}
+
+- (void)showAndDismissAfter:(NSTimeInterval)timeInterval {
+    [self showAnimated];
+    [self performSelector:@selector(hideAnimated) withObject:nil afterDelay:timeInterval];
+}
+
 - (void) show:(BOOL)animated {
     [self show:animated name:GCShowAnimation withAnimationContext:nil];
 }
@@ -180,6 +200,9 @@ NSString* const GCChangePresentationMode = @"changeMode";
         if (animated) [UIView commitAnimations]; 
     }
 }
+
+#pragma mark -
+#pragma mark Animations
 
 - (void) animationDidStop:(NSString *)animationID finished:(BOOL) finished context:(void *) context {
     if (animationID == GCHideAnimation) [self.activityIndicator stopAnimating];
@@ -221,10 +244,15 @@ NSString* const GCChangePresentationMode = @"changeMode";
 #pragma mark Getter and setters
 
 - (NSString *) textLabel {
-    return label.text;
+    return self.label.text;
 }
 
 - (void) setTextLabel:(NSString *) aText {
+    self.label.text = aText;
+    [self setNeedsLayout];
+}
+
+- (UILabel *)label {
     if (label == nil) {
         label = [[UILabel alloc] init];
         
@@ -237,10 +265,7 @@ NSString* const GCChangePresentationMode = @"changeMode";
         
         [self addSubview:label];
     }
-    
-    label.text = aText;
-    
-    [self setNeedsLayout];
+    return label;
 }
 
 - (BOOL) showActivity {
@@ -297,8 +322,7 @@ NSString* const GCChangePresentationMode = @"changeMode";
 }
 
 - (BOOL) isShowing {
-    if (self.center.y == self.showingCenter.y) return YES;
-    else return NO;
+    return (self.center.y == self.showingCenter.y);
 }
 
 - (CGPoint) showingCenter {

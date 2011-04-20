@@ -34,10 +34,14 @@ typedef enum {
 - (id) initWithText:(NSString *)text showActivity:(BOOL)activity inPresentationMode:(GCDiscreetNotificationViewPresentationMode) aPresentationMode inView:(UIView *)aView;
 
 //Show/Hide animated
+- (void) showAnimated;
+- (void) hideAnimated;
 - (void) show:(BOOL) animated;
 - (void) hide:(BOOL) animated;
+- (void) showAndDismissAutomaticallyAnimated;
+- (void) showAndDismissAfter:(NSTimeInterval) timeInterval;
 
-//Change proprieties animated
+//Change proprieties in a animated fashion
 - (void) setTextLabel:(NSString *) aText animated:(BOOL) animated;
 - (void) setShowActivity:(BOOL) activity animated:(BOOL) animated;
 - (void) setTextLabel:(NSString *)aText andSetShowActivity:(BOOL)activity animated:(BOOL)animated;
