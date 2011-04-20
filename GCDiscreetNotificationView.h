@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+//The presentation mode of the notification, it sticks to the top or buttom of the content view
 typedef enum {
     GCDiscreetNotificationViewPresentationModeTop,
     GCDiscreetNotificationViewPresentationModeBottom,
@@ -15,7 +16,7 @@ typedef enum {
 
 @interface GCDiscreetNotificationView : UIView 
 
-@property (nonatomic, assign) UIView *view;
+@property (nonatomic, assign) UIView *view; //The content view where the notification will be shown
 @property (nonatomic, assign) GCDiscreetNotificationViewPresentationMode presentationMode;
 
 //You can access the label and the activity indicator to change its values. 
