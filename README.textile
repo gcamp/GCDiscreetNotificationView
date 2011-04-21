@@ -3,7 +3,8 @@ h1. GCDiscreetNotificationView
 GCDiscreetNotificationView is a discreet, non-modal, notification view for iOS. You can use it to show an activity or state of you app without blocking the user interactions.
 
 
-!http://samvermette.com/files/svprogresshud3.png!
+!http://littlekiwi.co.cc/GithubImages/DiscreetNotification0.png!
+!http://littlekiwi.co.cc/GithubImages/DiscreetNotification1.png!
 
 GCDiscreetNotificationView features:
 
@@ -16,8 +17,6 @@ h2. Installation
 
 * Drag the @GCDiscreetNotificationView/GCDiscreetNotificationView@ folder into your project. 
 * There's not step two.
-
-__If you plan on using SVProgressHUD in a lot of places inside your app, I recommend importing it directly inside your prefix file.__
 
 h2. Usage
 
@@ -40,7 +39,6 @@ The parameters are the following :
 You show or hide the notification with these methods. The @showAndDismissAutomaticallyAnimated@ will hide your notification automatically after 1 second.
 
 <pre>
-//Show/Hide animated
 - (void) showAnimated;
 - (void) hideAnimated;
 - (void) show:(BOOL) animated;
@@ -49,7 +47,7 @@ You show or hide the notification with these methods. The @showAndDismissAutomat
 - (void) showAndDismissAfter:(NSTimeInterval) timeInterval;
 </pre>
 
-You can change the text of the label of the activity viewing at any moment with these properties
+You can change the text of the label of the activity viewing at any moment with these properties.
 
 <pre>
 @property (nonatomic, assign) UIView *view; //The content view where the notification will be shown
