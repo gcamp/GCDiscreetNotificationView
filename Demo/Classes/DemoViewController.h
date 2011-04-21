@@ -10,13 +10,7 @@
 
 @class GCDiscreetNotificationView;
 
-@interface DemoViewController : UIViewController <UITextFieldDelegate> {
-    UISwitch* activitySwitch;
-    UISwitch* topBottomSwitch;
-    UITextField* textField;
-    
-    GCDiscreetNotificationView* notificationView;
-}
+@interface DemoViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, retain) IBOutlet UISwitch *activitySwitch;
 @property (nonatomic, retain) IBOutlet UISwitch *topBottomSwitch;
