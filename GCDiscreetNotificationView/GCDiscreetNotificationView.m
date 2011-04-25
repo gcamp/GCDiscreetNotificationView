@@ -303,9 +303,7 @@ NSString* const GCChangePresentationMode = @"changeMode";
 }
 
 - (void) setPresentationMode:(GCDiscreetNotificationViewPresentationMode) newPresentationMode {
-    if (presentationMode != newPresentationMode) {
-        BOOL showing = self.isShowing;
-        
+    if (presentationMode != newPresentationMode) {        
         presentationMode = newPresentationMode;
         if (presentationMode == GCDiscreetNotificationViewPresentationModeTop) {
             self.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -314,7 +312,7 @@ NSString* const GCChangePresentationMode = @"changeMode";
             self.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
         }
         
-        self.center = showing ? self.showingCenter : self.hidingCenter;
+        self.center = self.isShowing ? self.showingCenter : self.hidingCenter;
         
         [self setNeedsDisplay];
         [self placeOnGrid];
