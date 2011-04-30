@@ -35,6 +35,7 @@ typedef enum {
 //Show/Hide animated
 - (void) showAnimated;
 - (void) hideAnimated;
+- (void) hideAnimatedAfter:(NSTimeInterval) timeInterval;
 - (void) show:(BOOL) animated;
 - (void) hide:(BOOL) animated;
 - (void) showAndDismissAutomaticallyAnimated;

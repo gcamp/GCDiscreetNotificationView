@@ -21,6 +21,7 @@
 - (IBAction) changeTopBottom:(id) sender;
 - (IBAction) show;
 - (IBAction) hide;
+- (IBAction) hideAfter1sec;
 
 @end
 
