@@ -35,6 +35,7 @@ You show or hide the notification with these methods. The @showAndDismissAutomat
 <pre>
 - (void) showAnimated;
 - (void) hideAnimated;
+- (void) hideAnimatedAfter:(NSTimeInterval) timeInterval;
 - (void) show:(BOOL) animated;
 - (void) hide:(BOOL) animated;
 - (void) showAndDismissAutomaticallyAnimated;
