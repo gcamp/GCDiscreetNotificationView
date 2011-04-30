@@ -34,6 +34,10 @@
     [self.notificationView hide:YES];
 }
 
+- (IBAction) hideAfter1sec {
+    [self.notificationView hideAnimatedAfter:1.0];
+}
+
 - (void) changeActivity:(id)sender {
     [self.notificationView setShowActivity:self.activitySwitch.on animated:YES];
 }

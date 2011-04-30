@@ -155,6 +155,10 @@ NSString* const GCChangePresentationMode = @"changeMode";
     [self hide:YES];
 }
 
+- (void) hideAnimatedAfter:(NSTimeInterval) timeInterval {
+   [self performSelector:@selector(hideAnimated) withObject:nil afterDelay:timeInterval]; 
+}
+
 - (void)showAndDismissAutomaticallyAnimated {
     [self showAndDismissAfter:1.0];
 }
