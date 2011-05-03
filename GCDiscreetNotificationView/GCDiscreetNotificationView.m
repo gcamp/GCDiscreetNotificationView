@@ -86,9 +86,10 @@ NSString* const GCChangePresentationMode = @"changeMode";
 #pragma mark Drawing and layout
 
 - (void) layoutSubviews {
-    CGFloat baseWidth = (2 * GCDiscreetNotificationViewBorderSize) + ((self.activityIndicator != nil) * GCDiscreetNotificationViewPadding);
+    BOOL withActivity = self.activityIndicator != nil;
+    CGFloat baseWidth = (2 * GCDiscreetNotificationViewBorderSize) + (withActivity * GCDiscreetNotificationViewPadding);
     
-    CGFloat maxLabelWidth = self.view.frame.size.width - self.activityIndicator.frame.size.width - baseWidth;
+    CGFloat maxLabelWidth = self.view.frame.size.width - self.activityIndicator.frame.size.width * withActivity - baseWidth;
     CGSize maxLabelSize = CGSizeMake(maxLabelWidth, GCDiscreetNotificationViewHeight);
     CGSize textSize = [self.textLabel sizeWithFont:self.label.font constrainedToSize:maxLabelSize lineBreakMode:UILineBreakModeTailTruncation];
     
