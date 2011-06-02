@@ -45,6 +45,5 @@ typedef enum {
 - (void) setTextLabel:(NSString *) aText animated:(BOOL) animated;
 - (void) setShowActivity:(BOOL) activity animated:(BOOL) animated;
 - (void) setTextLabel:(NSString *)aText andSetShowActivity:(BOOL)activity animated:(BOOL)animated;
-- (void) setPresentationMode:(GCDiscreetNotificationViewPresentationMode) newPresentationMode animated:(BOOL) animated;
 
 @end

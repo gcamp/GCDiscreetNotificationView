@@ -15,11 +15,9 @@ const CGFloat GCDiscreetNotificationViewHeight = 30;
 NSString* const GCShowAnimation = @"show";
 NSString* const GCHideAnimation = @"hide";
 NSString* const GCChangeProprety = @"changeProprety";
-NSString* const GCShowAfterPresentationChange = @"showPresentation";
 
 NSString* const GCDiscreetNotificationViewTextKey = @"text";
 NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
-NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMode";
 
 @interface GCDiscreetNotificationView ()
 
@@ -199,7 +197,7 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
             self.animating = YES;
             [UIView beginAnimations:name context:nil];
             [UIView setAnimationDelegate:self];
-            [UIView setAnimationBeginsFromCurrentState:(name != GCShowAfterPresentationChange)];
+            [UIView setAnimationBeginsFromCurrentState:YES];
             [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
         }
         
@@ -227,10 +225,6 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
             if (key == GCDiscreetNotificationViewActivityKey) {
                 self.showActivity = [[self.animationDict objectForKey:key] boolValue];
             }
-            else if (key == GCDiscreetNotificationViewPresentationModeKey) {
-                self.presentationMode = [[self.animationDict objectForKey:key] intValue];
-                showName = GCShowAfterPresentationChange;
-            }
             else if (key == GCDiscreetNotificationViewTextKey) {
                 self.textLabel = [self.animationDict objectForKey:key];
             }
@@ -240,7 +234,7 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
         
         [self show:YES name:showName];
     }    
-    else if (animationID == GCShowAnimation || animationID == GCShowAfterPresentationChange) {
+    else if (animationID == GCShowAnimation) {
         if (self.animationDict != nil) [self hide:YES name:GCChangeProprety];
     }
     
@@ -312,6 +306,8 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
 
 - (void) setPresentationMode:(GCDiscreetNotificationViewPresentationMode) newPresentationMode {
     if (presentationMode != newPresentationMode) {        
+        BOOL showing = self.isShowing;
+        
         presentationMode = newPresentationMode;
         if (presentationMode == GCDiscreetNotificationViewPresentationModeTop) {
             self.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -373,14 +369,6 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
         self.textLabel = aText;
         self.showActivity = activity;
     }
-}
-
-- (void) setPresentationMode:(GCDiscreetNotificationViewPresentationMode)newPresentationMode animated:(BOOL)animated {
-    if (animated) {
-        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewPresentationModeKey]
-                                                               values:[NSArray arrayWithObject:[NSNumber numberWithInt:newPresentationMode]]];
-    }
-    else self.presentationMode = newPresentationMode;
 }
 
 #pragma mark -

@@ -43,8 +43,7 @@
 }
 
 - (void) changeTopBottom:(id)sender {
-    [self.notificationView setPresentationMode:self.topBottomSwitch.on ?  GCDiscreetNotificationViewPresentationModeTop : GCDiscreetNotificationViewPresentationModeBottom
-						  animated:YES];
+    [self.notificationView setPresentationMode:self.topBottomSwitch.on ?  GCDiscreetNotificationViewPresentationModeTop : GCDiscreetNotificationViewPresentationModeBottom];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)aTextField {
