@@ -349,7 +349,7 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
 #pragma mark Animated Setters
 
 - (void) setTextLabel:(NSString *)aText animated:(BOOL)animated {
-    if (animated) {
+    if (animated && (self.showing || self.animating)) {
         [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewTextKey]
                                       values:[NSArray arrayWithObject:aText]];
     }
@@ -365,7 +365,7 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
 }
 
 - (void) setTextLabel:(NSString *)aText andSetShowActivity:(BOOL)activity animated:(BOOL)animated {
-    if (animated) {
+    if (animated && (self.showing || self.animating)) {
         [self changePropretyAnimatedWithKeys:[NSArray arrayWithObjects:GCDiscreetNotificationViewTextKey, GCDiscreetNotificationViewActivityKey, nil]
                                       values:[NSArray arrayWithObjects:aText, [NSNumber numberWithBool:activity], nil]];
     }
