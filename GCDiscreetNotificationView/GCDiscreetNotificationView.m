@@ -14,11 +14,12 @@ const CGFloat GCDiscreetNotificationViewHeight = 30;
 
 NSString* const GCShowAnimation = @"show";
 NSString* const GCHideAnimation = @"hide";
-NSString* const GCChangeProprety = @"changeproprety";
+NSString* const GCChangeProprety = @"changeProprety";
+NSString* const GCShowAfterPresentationChange = @"showPresentation";
 
 NSString* const GCDiscreetNotificationViewTextKey = @"text";
-NSString* const GCDiscreetNotificationViewActivityKey = @"text";
-NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
+NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
+NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMode";
 
 @interface GCDiscreetNotificationView ()
 
@@ -34,6 +35,7 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
 - (void) animationDidStop:(NSString *)animationID finished:(BOOL) finished context:(void *) context;
 
 - (void) placeOnGrid;
+- (void) changePropretyAnimatedWithKeys:(NSArray*) keys values:(NSArray*) values;
 
 @end
 
@@ -197,6 +199,7 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
             self.animating = YES;
             [UIView beginAnimations:name context:nil];
             [UIView setAnimationDelegate:self];
+            [UIView setAnimationBeginsFromCurrentState:(name != GCShowAfterPresentationChange)];
             [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
         }
         
@@ -218,12 +221,15 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
 - (void) animationDidStop:(NSString *)animationID finished:(BOOL) finished context:(void *) context {
     if (animationID == GCHideAnimation) [self.activityIndicator stopAnimating];
     else if (animationID == GCChangeProprety) {
+        NSString* showName = GCShowAnimation;
+        
         for (NSString* key in [self.animationDict allKeys]) {
             if (key == GCDiscreetNotificationViewActivityKey) {
                 self.showActivity = [[self.animationDict objectForKey:key] boolValue];
             }
             else if (key == GCDiscreetNotificationViewPresentationModeKey) {
                 self.presentationMode = [[self.animationDict objectForKey:key] intValue];
+                showName = GCShowAfterPresentationChange;
             }
             else if (key == GCDiscreetNotificationViewTextKey) {
                 self.textLabel = [self.animationDict objectForKey:key];
@@ -232,10 +238,9 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
         
         self.animationDict = nil;
         
-        [self setNeedsLayout];
-        [self show:YES];
+        [self show:YES name:showName];
     }    
-    else if (animationID == GCShowAnimation) {
+    else if (animationID == GCShowAnimation || animationID == GCShowAfterPresentationChange) {
         if (self.animationDict != nil) [self hide:YES name:GCChangeProprety];
     }
     
@@ -344,54 +349,25 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
 #pragma mark Animated Setters
 
 - (void) setTextLabel:(NSString *)aText animated:(BOOL)animated {
-    if (animated && self.isShowing) {
-        if (self.animationDict == nil) {
-            self.animationDict = [NSDictionary dictionaryWithObjectsAndKeys:aText, GCDiscreetNotificationViewTextKey, nil];
-        }
-        else {
-            NSMutableDictionary* mutableAnimationDict = [self.animationDict mutableCopy];
-            [mutableAnimationDict setObject:aText forKey:GCDiscreetNotificationViewTextKey];
-            self.animationDict = mutableAnimationDict;
-            [mutableAnimationDict release];
-        }
-        
-        if (!self.animating) [self hide:YES name:GCChangeProprety];
+    if (animated) {
+        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewTextKey]
+                                      values:[NSArray arrayWithObject:aText]];
     }
     else self.textLabel = aText;
 }
 
 - (void) setShowActivity:(BOOL)activity animated:(BOOL)animated {
     if (animated) {
-        if (self.animationDict == nil) {
-            self.animationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:activity], GCDiscreetNotificationViewActivityKey, nil];
-        }
-        else {
-            NSMutableDictionary* mutableAnimationDict = [self.animationDict mutableCopy];
-            [mutableAnimationDict setObject:[NSNumber numberWithBool:activity] forKey:GCDiscreetNotificationViewActivityKey];
-            self.animationDict = mutableAnimationDict;
-            [mutableAnimationDict release];
-        }
-        
-        if (!self.animating) [self hide:YES name:GCChangeProprety];
+        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewActivityKey]
+                                      values:[NSArray arrayWithObject:[NSNumber numberWithBool:activity]]];
     }
     else self.showActivity = activity;
 }
 
 - (void) setTextLabel:(NSString *)aText andSetShowActivity:(BOOL)activity animated:(BOOL)animated {
     if (animated) {
-        if (self.animationDict == nil) {
-            self.animationDict = [NSDictionary dictionaryWithObjectsAndKeys:aText, GCDiscreetNotificationViewTextKey,
-                                  [NSNumber numberWithBool:activity], GCDiscreetNotificationViewActivityKey, nil];
-        }
-        else {
-            NSMutableDictionary* mutableAnimationDict = [self.animationDict mutableCopy];
-            [mutableAnimationDict setObject:aText forKey:GCDiscreetNotificationViewTextKey];
-            [mutableAnimationDict setObject:[NSNumber numberWithBool:activity] forKey:GCDiscreetNotificationViewActivityKey];
-            self.animationDict = mutableAnimationDict;
-            [mutableAnimationDict release];
-        }
-        
-        if (!self.animating) [self hide:YES name:GCChangeProprety];
+        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObjects:GCDiscreetNotificationViewTextKey, GCDiscreetNotificationViewActivityKey, nil]
+                                      values:[NSArray arrayWithObjects:aText, [NSNumber numberWithBool:activity], nil]];
     }
     else {
         self.textLabel = aText;
@@ -401,17 +377,8 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
 
 - (void) setPresentationMode:(GCDiscreetNotificationViewPresentationMode)newPresentationMode animated:(BOOL)animated {
     if (animated) {
-        if (self.animationDict == nil) {
-            self.animationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:newPresentationMode], GCDiscreetNotificationViewPresentationModeKey, nil];
-        }
-        else {
-            NSMutableDictionary* mutableAnimationDict = [self.animationDict mutableCopy];
-            [mutableAnimationDict setObject:[NSNumber numberWithInt:newPresentationMode] forKey:GCDiscreetNotificationViewPresentationModeKey];
-            self.animationDict = mutableAnimationDict;
-            [mutableAnimationDict release];
-        }
-        
-        if (!self.animating) [self hide:YES name:GCChangeProprety];
+        [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewPresentationModeKey]
+                                                               values:[NSArray arrayWithObject:[NSNumber numberWithInt:newPresentationMode]]];
     }
     else self.presentationMode = newPresentationMode;
 }
@@ -426,6 +393,22 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"text";
     frame.origin.y = roundf(frame.origin.y);
     
     self.frame = frame;
+}
+
+- (void) changePropretyAnimatedWithKeys:(NSArray*) keys values:(NSArray*) values {
+    NSDictionary* newDict = [NSDictionary dictionaryWithObjects:values forKeys:keys];
+    
+    if (self.animationDict == nil) {
+        self.animationDict = newDict;
+    }
+    else {
+        NSMutableDictionary* mutableAnimationDict = [self.animationDict mutableCopy];
+        [mutableAnimationDict addEntriesFromDictionary:newDict];
+        self.animationDict = mutableAnimationDict;
+        [mutableAnimationDict release];
+    }
+    
+    if (!self.animating) [self hide:YES name:GCChangeProprety];
 }
 
 @end
