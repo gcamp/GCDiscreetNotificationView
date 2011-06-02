@@ -357,7 +357,7 @@ NSString* const GCDiscreetNotificationViewPresentationModeKey = @"presentationMo
 }
 
 - (void) setShowActivity:(BOOL)activity animated:(BOOL)animated {
-    if (animated) {
+    if (animated && (self.showing || self.animating)) {
         [self changePropretyAnimatedWithKeys:[NSArray arrayWithObject:GCDiscreetNotificationViewActivityKey]
                                       values:[NSArray arrayWithObject:[NSNumber numberWithBool:activity]]];
     }
