@@ -316,7 +316,7 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
             self.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
         }
         
-        self.center = self.isShowing ? self.showingCenter : self.hidingCenter;
+        self.center = showing ? self.showingCenter : self.hidingCenter;
         
         [self setNeedsDisplay];
         [self placeOnGrid];
