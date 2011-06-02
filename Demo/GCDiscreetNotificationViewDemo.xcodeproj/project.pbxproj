@@ -204,6 +204,7 @@
 				GCC_PREFIX_HEADER = GCDiscreetNotificationViewDemo_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = "GCDiscreetNotificationViewDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = GCDiscreetNotificationViewDemo;
 			};
 			name = Debug;
@@ -218,6 +219,7 @@
 				GCC_PREFIX_HEADER = GCDiscreetNotificationViewDemo_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = "GCDiscreetNotificationViewDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = GCDiscreetNotificationViewDemo;
 			};
 			name = Release;
