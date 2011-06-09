@@ -42,6 +42,7 @@ typedef enum {
 - (void) showAndDismissAfter:(NSTimeInterval) timeInterval;
 
 //Change proprieties in a animated fashion
+//If you need to change propreties, you NEED to use these methods. Hiding, changing value, and show it back will NOT work.
 - (void) setTextLabel:(NSString *) aText animated:(BOOL) animated;
 - (void) setShowActivity:(BOOL) activity animated:(BOOL) animated;
 - (void) setTextLabel:(NSString *)aText andSetShowActivity:(BOOL)activity animated:(BOOL)animated;
