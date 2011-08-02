@@ -402,4 +402,10 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
     if (!self.animating) [self hide:YES name:GCChangeProprety];
 }
 
+#pragma mark - UIView subclass
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    if (newSuperview == nil) self.animationDict = nil;
+}
+
 @end
