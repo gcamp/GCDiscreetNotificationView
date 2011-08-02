@@ -173,7 +173,7 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 
 - (void)showAndDismissAfter:(NSTimeInterval)timeInterval {
     [self showAnimated];
-    [self performSelector:@selector(hideAnimated) withObject:nil afterDelay:timeInterval];
+    [self hideAnimatedAfter:timeInterval];
 }
 
 - (void) show:(BOOL)animated {
