@@ -1,3 +1,9 @@
+This control is dual licensed:
+ 
+You can use it for free under the MIT licence below or, if you require non-attribution you can purchase the commercial licence available at http://www.cocoacontrols.com/authors/gcamp
+
+---
+
 Copyright (c) 2011 Guillaume Campagna
 
 Permission is hereby granted, free of charge, to any person
