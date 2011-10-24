@@ -184,6 +184,8 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 }
 
 - (void) show:(BOOL)animated name:(NSString*) name {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideAnimated) object:nil];
+
     [self showOrHide:NO animated:animated name:name];
 }
 
