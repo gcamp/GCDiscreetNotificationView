@@ -409,7 +409,10 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 #pragma mark - UIView subclass
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
-    if (newSuperview == nil) self.animationDict = nil;
+    if (newSuperview == nil) {
+        self.animationDict = nil;
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideAnimated) object:nil];
+    }
 }
 
 @end
