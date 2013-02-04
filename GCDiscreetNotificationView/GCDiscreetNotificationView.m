@@ -212,6 +212,7 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
         
         if (hide) self.center = self.hidingCenter;
         else {
+            [self.superview bringSubviewToFront:self];
             [self.activityIndicator startAnimating];
             self.center = self.showingCenter;
         }
