@@ -345,15 +345,15 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 - (CGPoint) showingCenter {
     CGFloat y = 0;
     if (self.presentationMode == GCDiscreetNotificationViewPresentationModeTop) y = 15;
-    else if (self.presentationMode == GCDiscreetNotificationViewPresentationModeBottom) y = self.view.frame.size.height - 15;
-    return CGPointMake(self.view.frame.size.width / 2, y);
+    else if (self.presentationMode == GCDiscreetNotificationViewPresentationModeBottom) y = self.view.bounds.size.height - 15;
+    return CGPointMake(self.view.bounds.size.width / 2, y);
 }
 
 - (CGPoint) hidingCenter {
     CGFloat y = 0;
     if (self.presentationMode == GCDiscreetNotificationViewPresentationModeTop) y = - 15;
-    else if (self.presentationMode == GCDiscreetNotificationViewPresentationModeBottom) y = 15 + self.view.frame.size.height;
-    return CGPointMake(self.view.frame.size.width / 2, y);
+    else if (self.presentationMode == GCDiscreetNotificationViewPresentationModeBottom) y = 15 + self.view.bounds.size.height;
+    return CGPointMake(self.view.bounds.size.width / 2, y);
 }
 
 #pragma mark -
