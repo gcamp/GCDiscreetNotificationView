@@ -45,6 +45,13 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 #pragma mark -
 #pragma mark Init and dealloc
 
+- (id)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        presentationMode = -1;
+    }
+    return self;
+}
+
 - (id) initWithText:(NSString *)text inView:(UIView *)aView {
     return [self initWithText:text showActivity:NO inView:aView];
 }
@@ -55,7 +62,7 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 
 - (id) initWithText:(NSString *)text showActivity:(BOOL)activity 
  inPresentationMode:(GCDiscreetNotificationViewPresentationMode)aPresentationMode inView:(UIView *)aView {
-    if ((self = [super initWithFrame:CGRectZero])) {
+    if ((self = [self initWithFrame:CGRectZero])) {
         self.view = aView;
         self.textLabel = text;
         self.showActivity = activity;
