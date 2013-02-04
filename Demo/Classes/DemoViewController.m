@@ -52,6 +52,14 @@
     return NO;
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
+}
+
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
 - (void)dealloc {
     [activitySwitch release];
     activitySwitch = nil;
