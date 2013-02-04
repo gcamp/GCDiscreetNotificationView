@@ -215,13 +215,12 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
             [self.superview bringSubviewToFront:self];
             [self.activityIndicator startAnimating];
             self.center = self.showingCenter;
+            self.label.hidden = NO;
         }
         
         [self placeOnGrid];
         
         if (animated) [UIView commitAnimations]; 
-
-        self.label.hidden = hide;
     }
 }
 
@@ -229,7 +228,10 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 #pragma mark Animations
 
 - (void) animationDidStop:(NSString *)animationID finished:(BOOL) finished context:(void *) context {
-    if (animationID == GCHideAnimation) [self.activityIndicator stopAnimating];
+    if (animationID == GCHideAnimation) {
+        [self.activityIndicator stopAnimating];
+        self.label.hidden = YES;
+    }
     else if (animationID == GCChangeProprety) {
         NSString* showName = GCShowAnimation;
         
