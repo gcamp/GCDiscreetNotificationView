@@ -80,20 +80,6 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
     return self;
 }
 
-- (void)dealloc {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideAnimated) object:nil];
-    
-    self.view = nil;
-    
-    [label release];
-    label = nil;
-    
-    [activityIndicator release];
-    activityIndicator = nil;
-    
-    [super dealloc];
-}
-
 #pragma mark -
 #pragma mark Drawing and layout
 
@@ -103,7 +89,7 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
     
     CGFloat maxLabelWidth = self.view.frame.size.width - self.activityIndicator.frame.size.width * withActivity - baseWidth;
     CGSize maxLabelSize = CGSizeMake(maxLabelWidth, GCDiscreetNotificationViewHeight);
-    CGFloat textSizeWidth = (self.textLabel != nil) ? [self.textLabel sizeWithFont:self.label.font constrainedToSize:maxLabelSize lineBreakMode:UILineBreakModeTailTruncation].width : 0;
+    CGFloat textSizeWidth = (self.textLabel != nil) ? [self.textLabel boundingRectWithSize:maxLabelSize options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:self.label.font} context:nil].size.width : 0;
     
     CGFloat activityIndicatorWidth = (self.activityIndicator != nil) ? self.activityIndicator.frame.size.width : 0;
     CGRect bounds = CGRectMake(0, 0, baseWidth + textSizeWidth + activityIndicatorWidth, GCDiscreetNotificationViewHeight);
@@ -296,8 +282,6 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
         }
         else {
             [activityIndicator removeFromSuperview];
-            
-            [activityIndicator release];
             activityIndicator = nil;
         }
         
@@ -307,13 +291,10 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
 
 - (void) setView:(UIView *) aView {
     if (self.view != aView) {
-        [self retain];
         [self removeFromSuperview];
         
         [aView addSubview:self];
         [self setNeedsLayout];
-        
-        [self release];
     }
 }
 
@@ -410,7 +391,6 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
         NSMutableDictionary* mutableAnimationDict = [self.animationDict mutableCopy];
         [mutableAnimationDict addEntriesFromDictionary:newDict];
         self.animationDict = mutableAnimationDict;
-        [mutableAnimationDict release];
     }
     
     if (!self.animating) [self hide:YES name:GCChangeProprety];
