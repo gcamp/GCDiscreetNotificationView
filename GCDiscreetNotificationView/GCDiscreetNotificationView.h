@@ -18,13 +18,13 @@ typedef enum {
 
 //You can access the label and the activity indicator to change its values. 
 //If you want to change the text or the activity itself, use textLabel and showActivity proprieties.
-@property (nonatomic, retain, readonly) UILabel *label;  
-@property (nonatomic, retain, readonly) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic, readonly) UILabel *label;
+@property (strong, nonatomic, readonly) UIActivityIndicatorView *activityIndicator;
 
-@property (nonatomic, assign) UIView *view; //The content view where the notification will be shown
-@property (nonatomic, assign) GCDiscreetNotificationViewPresentationMode presentationMode;
+@property (weak, nonatomic) UIView *view; //The content view where the notification will be shown
+@property (nonatomic) GCDiscreetNotificationViewPresentationMode presentationMode;
 @property (nonatomic, copy) NSString* textLabel;
-@property (nonatomic, assign) BOOL showActivity;
+@property (nonatomic) BOOL showActivity;
 
 @property (nonatomic, readonly, getter = isShowing) BOOL showing;
 
